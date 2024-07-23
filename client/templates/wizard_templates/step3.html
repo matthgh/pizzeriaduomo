@@ -1,0 +1,21 @@
+<p>Step {{ wizard.steps.step1 }} of {{ wizard.steps.count }}</p>
+
+<script src="https://unpkg.com/htmx.org@2.0.1"></script>
+
+<form method="post">
+  {% csrf_token %}
+  {{ wizard.management_form }}
+  {{ form.as_p }}
+  <div id="additional-bibita-div"></div>
+  <button
+    hx-get="{% url 'additional-bibita-form' %}"
+    hx-target="#additional-bibita-div"
+    hx-swap="beforeend"
+  >
+    Aggiungi un'altra pizza
+  </button>
+  <button name="wizard_goto_step" type="submit" value="{{ wizard.steps.prev }}">
+    Precedente
+  </button>
+  <button type="submit">Next</button>
+</form>

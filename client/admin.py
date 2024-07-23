@@ -1,3 +1,6 @@
 from django.contrib import admin
 
-# Register your models here.
+from client.models import Ordine
+from client.forms import *
+
+admin.site.register(Ordine)

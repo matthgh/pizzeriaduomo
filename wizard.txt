@@ -1,0 +1,15 @@
+
+
+
+
+
+
+1.nome-telefono-tipo di consumazione-------se sul posto-------->pizza, bibita
+										|
+										|
+										|
+										|--se da portare via--->pizza, bibita
+										|
+										|
+										|
+										|--se consegna--------->pizza, via
