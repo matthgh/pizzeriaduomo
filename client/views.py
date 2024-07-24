@@ -1,10 +1,13 @@
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 
 from formtools.wizard.views import SessionWizardView
+
 from client.forms import OggettiBibitaOrdineForm, OggettiPizzaOrdineForm
-from client.models import Ordine
+from client.models import Ordine, OggettiPizzaOrdine, OggettiBibitaOrdine
 from client.wizard_setup import WIZARD_TEMPLATES, FORM_LIST, CONDITION_DICT
+
+from administration.models import Pizza
 
 
 class OrdineWizardView(SessionWizardView):
@@ -23,10 +26,19 @@ class OrdineWizardView(SessionWizardView):
             strada_consegna.save()
 
         else:
-            form_ordine.save()
+            ordine = form_ordine.save()
 
-        # ordine = Ordine.objects.create()
+        pizza_form = dict(form_list[1].data)
+
+        id_pizza = pizza_form.get("step2-pizza")[0]
+        quantita = pizza_form.get("step2-quantita")[0]
+        pizza = get_object_or_404(Pizza, id=id_pizza)
+        print(pizza)
+        OggettiPizzaOrdine.objects.create(ordine=ordine, pizza=pizza, quantita=quantita)
+
         print(dict(form_list[1].data))
+
+        print(form_list)
         return HttpResponse("Done method!")
 
 

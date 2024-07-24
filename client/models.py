@@ -47,7 +47,13 @@ class RitiroOrdineMezzogiorno(models.Model):
     ordine = models.ForeignKey(to=Ordine, on_delete=models.CASCADE)
     ora = models.CharField(choices=scelta_ora_mezzogiorno(), max_length=100)
 
+    def __str__(self) -> str:
+        return self.ora
+
 
 class RitiroOrdineSera(models.Model):
     ordine = models.ForeignKey(to=Ordine, on_delete=models.CASCADE)
     ora = models.CharField(choices=scelta_ora_sera(), max_length=100)
+
+    def __str__(self) -> str:
+        return self.ora
