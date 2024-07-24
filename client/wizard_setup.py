@@ -28,21 +28,32 @@ FORM_LIST = [
 ]
 
 
-def consegna_domicilio(wizard):
-    cleaned_data = wizard.det_cleaned_data_for_step("0")
+def consegna_domicilio(wizard) -> bool:
+    cleaned_data = wizard.get_cleaned_data_for_step("step1") or {}
+    return cleaned_data.get("consegna", False) == "consegna_al_domicilio"
 
 
-def ritiro_mezzogiorno(wizard):
-    time = datetime.now().time()
-    controllo_apertura = time.hour > 12 and time.minute > 0
-    controllo_chiusura = time.hour < 13 and time.minute < 45
+def ritiro_mezzogiorno(wizard) -> bool:
+    now_time = datetime.now().time()
+    orario_apertura = "12:00"
+    orario_chiusura = "13:45"
+    orario_apertura_obj = datetime.strptime(orario_apertura, "%H:%M").time()
+    orario_chiusura_obj = datetime.strptime(orario_chiusura, "%H:%M").time()
+    return orario_apertura_obj < now_time and orario_chiusura_obj > now_time
 
-    return controllo_apertura and controllo_chiusura
+
+def ritiro_sera(wizard) -> bool:
+    # now_time = datetime.now().time()
+    now_time = datetime.strptime("18:00", "%H:%M").time()
+    orario_apertura = "17:45"
+    orario_chiusura = "23:45"
+    orario_apertura_obj = datetime.strptime(orario_apertura, "%H:%M").time()
+    orario_chiusura_obj = datetime.strptime(orario_chiusura, "%H:%M").time()
+    return orario_apertura_obj < now_time and orario_chiusura_obj > now_time
 
 
-def ritiro_sera(wizard):
-    time = datetime.now().time()
-    controllo_apertura = time.hour > 17 and time.minute > 45
-    controllo_chiusura = time.hour < 23 and time.minute < 45
-
-    return controllo_apertura and controllo_chiusura
+CONDITION_DICT = {
+    "step4": consegna_domicilio,
+    "step5": ritiro_mezzogiorno,
+    "step6": ritiro_sera,
+}
