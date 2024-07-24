@@ -18,10 +18,9 @@ class OrdineWizardView(SessionWizardView):
         form_ordine = form_list[0]
         if form_ordine.cleaned_data.get("consegna") == "consegna_al_domicilio":
             ordine = form_ordine.save()
-            consegna = form_list[4].save(commit=False)
-            consegna.ordine = ordine
-            x = consegna.save()
-            print(x)
+            strada_consegna = form_list[3].save(commit=False)
+            strada_consegna.ordine = ordine
+            strada_consegna.save()
 
         else:
             form_ordine.save()

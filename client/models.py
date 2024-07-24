@@ -19,6 +19,9 @@ class Ordine(models.Model):
     data = models.DateField(auto_now_add=True)
     token = models.UUIDField(default=uuid4())
 
+    def __str__(self) -> str:
+        return f"{self.nome} {self.data} {self.consegna}"
+
 
 class OggettiPizzaOrdine(models.Model):
     ordine = models.ForeignKey(to=Ordine, on_delete=models.CASCADE)
@@ -35,6 +38,9 @@ class OggettiBibitaOrdine(models.Model):
 class StradaOrdine(models.Model):
     ordine = models.ForeignKey(to=Ordine, on_delete=models.CASCADE)
     strada = models.CharField(max_length=500, default="")
+
+    def __str__(self) -> str:
+        return self.strada
 
 
 class RitiroOrdineMezzogiorno(models.Model):
