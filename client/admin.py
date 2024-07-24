@@ -1,9 +1,16 @@
 from django.contrib import admin
 
-from client.models import Ordine, StradaOrdine, OggettiPizzaOrdine, OggettiBibitaOrdine
+from client.models import *
 from client.forms import *
 
-admin.site.register(Ordine)
-admin.site.register(StradaOrdine)
-admin.site.register(OggettiPizzaOrdine)
-admin.site.register(OggettiBibitaOrdine)
+classes = [
+    Ordine,
+    StradaOrdine,
+    OggettiPizzaOrdine,
+    OggettiBibitaOrdine,
+    RitiroOrdineMezzogiorno,
+    RitiroOrdineSera,
+]
+
+for _class in classes:
+    admin.site.register(_class)

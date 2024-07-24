@@ -1,13 +1,17 @@
 from django.http import HttpResponse
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import render
 
 from formtools.wizard.views import SessionWizardView
 
 from client.forms import OggettiBibitaOrdineForm, OggettiPizzaOrdineForm
 from client.models import Ordine, OggettiPizzaOrdine, OggettiBibitaOrdine
-from client.wizard_setup import WIZARD_TEMPLATES, FORM_LIST, CONDITION_DICT
-
-from administration.models import Pizza
+from client.wizard_setup import (
+    WIZARD_TEMPLATES,
+    FORM_LIST,
+    CONDITION_DICT,
+    creazione_ordine_bibite,
+    creazione_ordine_pizze,
+)
 
 
 class OrdineWizardView(SessionWizardView):
@@ -24,21 +28,21 @@ class OrdineWizardView(SessionWizardView):
             strada_consegna = form_list[3].save(commit=False)
             strada_consegna.ordine = ordine
             strada_consegna.save()
+            orario = form_list[4].save(commit=False)
+            orario.ordine = ordine
+            orario.save()
 
         else:
             ordine = form_ordine.save()
+            orario = form_list[3].save(commit=False)
+            orario.ordine = ordine
+            orario.save()
 
-        pizza_form = dict(form_list[1].data)
+        creazione_ordine_pizze(form_list=form_list, ordine=ordine)
+        creazione_ordine_bibite(form_list=form_list, ordine=ordine)
 
-        id_pizza = pizza_form.get("step2-pizza")[0]
-        quantita = pizza_form.get("step2-quantita")[0]
-        pizza = get_object_or_404(Pizza, id=id_pizza)
-        print(pizza)
-        OggettiPizzaOrdine.objects.create(ordine=ordine, pizza=pizza, quantita=quantita)
+        print(form_list[3].data)
 
-        print(dict(form_list[1].data))
-
-        print(form_list)
         return HttpResponse("Done method!")
 
 

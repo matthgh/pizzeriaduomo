@@ -29,7 +29,7 @@ class OggettiPizzaOrdine(models.Model):
     quantita = models.PositiveIntegerField(default=1)
 
     def __str__(self) -> str:
-        return f"{self.ordine} - {self.pizza} - {self.quantita}"
+        return f"{self.ordine} -> {self.pizza} - {self.quantita}"
 
 
 class OggettiBibitaOrdine(models.Model):
@@ -37,13 +37,16 @@ class OggettiBibitaOrdine(models.Model):
     bibita = models.ForeignKey(to=Bibita, on_delete=models.SET_NULL, null=True)
     quantita = models.PositiveIntegerField(default=1)
 
+    def __str__(self) -> str:
+        return f"{self.ordine} -> {self.bibita} - {self.quantita}"
+
 
 class StradaOrdine(models.Model):
     ordine = models.ForeignKey(to=Ordine, on_delete=models.CASCADE)
     strada = models.CharField(max_length=500, default="")
 
     def __str__(self) -> str:
-        return self.strada
+        return f"{self.ordine} -> {self.strada}"
 
 
 class RitiroOrdineMezzogiorno(models.Model):
@@ -51,7 +54,7 @@ class RitiroOrdineMezzogiorno(models.Model):
     ora = models.CharField(choices=scelta_ora_mezzogiorno(), max_length=100)
 
     def __str__(self) -> str:
-        return self.ora
+        return f"{self.ordine} -> {self.ora}"
 
 
 class RitiroOrdineSera(models.Model):
@@ -59,4 +62,4 @@ class RitiroOrdineSera(models.Model):
     ora = models.CharField(choices=scelta_ora_sera(), max_length=100)
 
     def __str__(self) -> str:
-        return self.ora
+        return f"{self.ordine} -> {self.ora}"
