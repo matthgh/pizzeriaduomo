@@ -28,6 +28,9 @@ class OggettiPizzaOrdine(models.Model):
     pizza = models.ForeignKey(to=Pizza, on_delete=models.SET_NULL, null=True)
     quantita = models.PositiveIntegerField(default=1)
 
+    def __str__(self) -> str:
+        return f"{self.ordine} - {self.pizza} - {self.quantita}"
+
 
 class OggettiBibitaOrdine(models.Model):
     ordine = models.ForeignKey(to=Ordine, on_delete=models.CASCADE)
