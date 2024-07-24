@@ -55,8 +55,12 @@ def additional_pizza_form(request):
 
 
 def additional_bibita_form(request):
-    return render(
-        request,
-        "partials/additional_bibita_form.html",
-        {"form": OggettiBibitaOrdineForm()},
-    )
+
+    http_response = HttpResponse("{{form.as_p}}", content_type="text/html")
+    # return render(
+    #     request,
+    #     "partials/additional_bibita_form.html",
+    #     {"form": OggettiBibitaOrdineForm()},
+    # )
+
+    return http_response
